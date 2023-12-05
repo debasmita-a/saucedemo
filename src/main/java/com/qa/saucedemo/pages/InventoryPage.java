@@ -100,6 +100,10 @@ public class InventoryPage {
 		return util.doGetAttributeValue(footer, "innerText");
 	}
 	
+	public String getInventoryPageURL() {
+		return util.getPageURL();
+	}
+	
 	public List<String> productListWithSortOption(String sortOption) {
 		util.doClick(filters);
 		util.doSelectWithVisibleText(filters, sortOption);
@@ -110,9 +114,33 @@ public class InventoryPage {
 		return productNames;
 	}
 	
-	public void addAProductToCart(String productname) {
-		util.doClick(util.getProductAddToCartID(productname));
+	public void addAProductToCart(String productname) { //if already added then it can't be added
+		if(util.isElementDisplayed(util.getProductAddToCartID(productname))) {
+			util.doClick(util.getProductAddToCartID(productname));
+			cartItemCount++;
+		}else {
+			System.out.println("Product is already added to Cart.");
+		}
 	}
 	
+	public void removeAProductFromCart(String productname) { //if already added then it can't be added
+		if(util.isElementDisplayed(util.getProductRemoveId(productname))) {
+			util.doClick(util.getProductRemoveId(productname));
+			cartItemCount--;
+		}else {
+			System.out.println("Product has not been added to Cart.");
+		}
+	}
 	
+	public ProductCartPage navigateToCartPage() {
+		util.doClick(shoppingCartLink);
+		return new ProductCartPage(driver);
+	}
+	
+	public ProductDetailsPage navigateToProductDetailsPage(String productname) {
+		//div[contains(text(),'Sauce Labs Onesie')]
+		String productXpath = "//div[contains(text(),'" + productname + "')]";
+		util.doClick(By.xpath(productXpath));
+		return new ProductDetailsPage(driver);
+	}
 }

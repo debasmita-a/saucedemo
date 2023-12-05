@@ -5,7 +5,8 @@ import java.util.List;
 
 public class FrameworkConstants {
 
-	public static final String INVENTORY_PAGE_URL = "inventory.html";	
+	public static final String INVENTORY_PAGE_URL = "inventory.html";
+	public static final String CART_PAGE_URL = "cart.html";
 	public static final List<String> SORTING_OPTIONS = Arrays.asList
 			("Name (A to Z)", 
 			"Name (Z to A)", 
@@ -14,4 +15,6 @@ public class FrameworkConstants {
 	public static final int PRODUCT_COUNT = 6;
 	public static final String FOOTER_TEXT = "© 2023 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy";
 	
+	public static final String CART_PAGE_HEADER = "Your Cart";
+	public static final String INVENTORY_PAGE_HEADER = "Products";
 }
