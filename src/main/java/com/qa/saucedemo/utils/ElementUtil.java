@@ -74,7 +74,7 @@ public class ElementUtil {
 	
 	//******************app utils*********************************
 	public String productNameToLowerCase(String productName) {
-		return productName.toLowerCase().replace(" ", "-");
+		return productName.toLowerCase().replace(" ", "-").trim();
 	}
 	
 	public By getProductAddToCartID(String productName) {

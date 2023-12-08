@@ -18,7 +18,7 @@ public class DriverFactory {
 	private Properties prop;
 	
 	public WebDriver initDriver(Properties prop) {
-		this.prop = prop;
+
 		String browserName = prop.getProperty("browser");
 		
 		switch (browserName.toLowerCase().trim()) {
@@ -49,6 +49,7 @@ public class DriverFactory {
 	public Properties initProp() {
 		try {
 			FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
+			prop = new Properties();
 			prop.load(ip);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
