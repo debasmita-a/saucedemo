@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeTest;
 import com.qa.saucedemo.factory.DriverFactory;
 import com.qa.saucedemo.pages.InventoryPage;
 import com.qa.saucedemo.pages.LoginPage;
+import com.qa.saucedemo.pages.ProductCartPage;
 
 public class BaseTest {
 
@@ -17,6 +18,7 @@ public class BaseTest {
 	protected Properties prop;
 	protected LoginPage loginPage;
 	protected InventoryPage inventoryPage;
+	protected ProductCartPage cartPage;
 	
 	@BeforeTest
 	public void setup() {

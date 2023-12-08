@@ -28,6 +28,7 @@ public class InventoryPage {
 	private By cartBadge = By.className("shopping_cart_badge");
 	private By menuBtn = By.id("react-burger-menu-btn");
 	private By menuOptions = By.xpath("//nav/a");
+	private By menuCrossBtn = By.id("react-burger-cross-btn");
 	private By filters = By.className("product_sort_container");
 	private By footer = By.className("footer_copy");
 
@@ -64,6 +65,7 @@ public class InventoryPage {
 
 	public List<String> getAllSortingOptions() {
 		List<WebElement> sortingOptionsList = util.getDropdownOptions(filters);
+		sortingOptions = new ArrayList<String>();
 		for (WebElement e : sortingOptionsList) {
 			sortingOptions.add(e.getText());
 		}
@@ -141,9 +143,11 @@ public class InventoryPage {
 		List<WebElement> allNavMenu = util.getElements(menuOptions);
 		for (WebElement e : allNavMenu) {
 			if (e.getText().equals("Logout")) {
+				util.doClick(menuCrossBtn);
 				return true;
 			}
 		}
+		//util.doClick(menuCrossBtn);
 		return false;
 	}
 

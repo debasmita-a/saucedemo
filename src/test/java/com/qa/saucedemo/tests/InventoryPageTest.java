@@ -78,7 +78,7 @@ public class InventoryPageTest extends BaseTest{
 		};
 	}
 	
-	@Test(dataProvider = "getProductSortedList")
+	@Test(dataProvider = "getProductSortedListByName")
 	public void productSortByNameTest(String sortingOption) {
 		Assert.assertTrue(inventoryPage.productSortByName(sortingOption));
 	}

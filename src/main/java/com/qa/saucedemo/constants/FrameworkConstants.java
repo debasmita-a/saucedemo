@@ -7,6 +7,7 @@ public class FrameworkConstants {
 
 	public static final String INVENTORY_PAGE_URL = "inventory.html";
 	public static final String CART_PAGE_URL = "cart.html";
+	public static final String CHECKOUT_PAGE_URL = "checkout-step-one.html";
 	public static final List<String> SORTING_OPTIONS = Arrays.asList
 			("Name (A to Z)", 
 			"Name (Z to A)", 
@@ -17,4 +18,5 @@ public class FrameworkConstants {
 	
 	public static final String CART_PAGE_HEADER = "Your Cart";
 	public static final String INVENTORY_PAGE_HEADER = "Products";
+	public static final String CHECKOUT_PAGE_HEADER = "Checkout: Your Information";
 }
