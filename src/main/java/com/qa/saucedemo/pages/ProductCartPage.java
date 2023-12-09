@@ -13,6 +13,8 @@ public class ProductCartPage {
 	private By continueShoppingBtn = By.id("continue-shopping");
 	private By checkoutBtn = By.id("checkout");
 	private By cartItemCount = By.className("cart_item");
+	private By productsPageTitle = By.className("title");
+	private By shoppingCartLink = By.id("shopping_cart_container");
 	
 	
 	
@@ -48,8 +50,11 @@ public class ProductCartPage {
 		return util.getElements(cartItemCount).size();
 	}
 	
-	public void clickOnContinueShoppingBtn() {
-		
+	public String clickOnContinueShoppingBtn() {
+		util.doClick(continueShoppingBtn);
+		String productsPageHeader = util.doGetText(productsPageTitle);
+		util.doClick(shoppingCartLink);
+		return productsPageHeader;
 	}
 	
 	public void verifyProductDetails() {

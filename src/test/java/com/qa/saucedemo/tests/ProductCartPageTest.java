@@ -5,6 +5,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.qa.saucedemo.constants.FrameworkConstants;
+
 import qa.com.saucedemo.base.BaseTest;
 
 public class ProductCartPageTest extends BaseTest{
@@ -39,5 +41,10 @@ public class ProductCartPageTest extends BaseTest{
 	public void getCartItemCountTest(String productname) {
 		inventoryPage.addAProductToCart(productname);
 		Assert.assertEquals(cartPage.getCartItemCount(), inventoryPage.getShoppingCartItemCount());
+	}
+	
+	@Test
+	public void clickOnContinueShoppingBtnTest() {
+		Assert.assertTrue(cartPage.clickOnContinueShoppingBtn().equals(FrameworkConstants.INVENTORY_PAGE_HEADER));
 	}
 }

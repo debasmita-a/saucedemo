@@ -10,6 +10,7 @@ import com.qa.saucedemo.factory.DriverFactory;
 import com.qa.saucedemo.pages.InventoryPage;
 import com.qa.saucedemo.pages.LoginPage;
 import com.qa.saucedemo.pages.ProductCartPage;
+import com.qa.saucedemo.pages.ProductDetailsPage;
 
 public class BaseTest {
 
@@ -19,6 +20,7 @@ public class BaseTest {
 	protected LoginPage loginPage;
 	protected InventoryPage inventoryPage;
 	protected ProductCartPage cartPage;
+	protected ProductDetailsPage productDetailsPage;
 	
 	@BeforeTest
 	public void setup() {

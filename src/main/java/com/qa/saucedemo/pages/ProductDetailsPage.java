@@ -52,6 +52,7 @@ public class ProductDetailsPage {
 		productMap.put("Product Name", getProductName(productname));
 		productMap.put("Price", getProductPrice(productname));
 		productMap.put("Description", getProductDescription(productname));
+		System.out.println(productMap);
 		return productMap;
 	}
 	
