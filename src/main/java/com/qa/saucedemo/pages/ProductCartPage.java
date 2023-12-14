@@ -57,7 +57,7 @@ public class ProductCartPage {
 		return productsPageHeader;
 	}
 	
-	public void verifyProductDetails() {
+	public void verifyProductDetails(String productname) {
 		
 	}
 	

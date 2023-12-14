@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 
 import com.qa.saucedemo.utils.ElementUtil;
 
@@ -14,8 +16,14 @@ public class ProductDetailsPage {
 	private ElementUtil util;
 	private Map<String, String> productMap = null;
 	
+	private By backToProductPageNav = By.id("back-to-products");
+	private By productName = By.xpath("//div[contains(@class,'inventory_details_name')]");
+	private By productDesc = By.xpath("//div[contains(@class,'inventory_details_desc')]");
+	private By productPrice = By.className("inventory_details_price");
+	
 	public ProductDetailsPage(WebDriver driver) {
 		this.driver = driver;
+		util = new ElementUtil(driver);
 		productMap = new HashMap<String, String>();
 	}
 	
@@ -49,9 +57,10 @@ public class ProductDetailsPage {
 	 * @returns a Map<String, String>
 	 */
 	public Map<String, String> getAllProductDetails(String productname) {
-		productMap.put("Product Name", getProductName(productname));
-		productMap.put("Price", getProductPrice(productname));
-		productMap.put("Description", getProductDescription(productname));
+		productMap.put("Product Name", util.doGetText(productName));
+		productMap.put("Price", util.doGetText(productDesc));
+		productMap.put("Description", util.doGetText(productPrice));
+		util.doClick(backToProductPageNav);
 		System.out.println(productMap);
 		return productMap;
 	}

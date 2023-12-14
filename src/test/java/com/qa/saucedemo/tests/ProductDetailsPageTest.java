@@ -25,6 +25,7 @@ public class ProductDetailsPageTest extends BaseTest{
 	
 	@Test(dataProvider = "getProductDetailsTestdata")
 	public void getAllProductDetailsTest(String productname) {
-		
+		productDetailsPage = inventoryPage.navigateToProductDetailsPage(productname);
+		productDetailsPage.getAllProductDetails(productname);
 	}
 }
