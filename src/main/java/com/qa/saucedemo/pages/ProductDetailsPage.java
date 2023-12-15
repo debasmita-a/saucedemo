@@ -18,7 +18,7 @@ public class ProductDetailsPage {
 	
 	private By backToProductPageNav = By.id("back-to-products");
 	private By productName = By.xpath("//div[contains(@class,'inventory_details_name')]");
-	private By productDesc = By.xpath("//div[contains(@class,'inventory_details_desc')]");
+	private By productDesc = By.xpath("//div[@class='inventory_details_desc large_size']");
 	private By productPrice = By.className("inventory_details_price");
 	
 	public ProductDetailsPage(WebDriver driver) {
@@ -57,9 +57,9 @@ public class ProductDetailsPage {
 	 * @returns a Map<String, String>
 	 */
 	public Map<String, String> getAllProductDetails(String productname) {
-		productMap.put("Product Name", util.doGetText(productName));
-		productMap.put("Price", util.doGetText(productDesc));
-		productMap.put("Description", util.doGetText(productPrice));
+		productMap.put("Product Name", util.doGetAttributeValue(productName, "innerText"));
+		productMap.put("Price", util.doGetAttributeValue(productPrice, "innerText"));
+		productMap.put("Description", util.doGetAttributeValue(productDesc, "innerText"));
 		util.doClick(backToProductPageNav);
 		System.out.println(productMap);
 		return productMap;

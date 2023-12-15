@@ -1,5 +1,8 @@
 package com.qa.saucedemo.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -9,65 +12,93 @@ public class ProductCartPage {
 
 	private WebDriver driver;
 	private ElementUtil util;
-	
+
 	private By continueShoppingBtn = By.id("continue-shopping");
 	private By checkoutBtn = By.id("checkout");
 	private By cartItemCount = By.className("cart_item");
 	private By productsPageTitle = By.className("title");
 	private By shoppingCartLink = By.id("shopping_cart_container");
+	private By allProducts = By.xpath("//div[@class='inventory_item_name']");
+	private By cartsPageTitle = By.className("title");
 	
-	
-	
+	private By productName = By.className("inventory_item_name");
+	private By productDesc = By.className("inventory_item_desc");
+	private By productPrice = By.className("inventory_item_price");
+
 	public ProductCartPage(WebDriver driver) {
 		this.driver = driver;
 		util = new ElementUtil(driver);
 	}
-	
+
 	/*
 	 * 
-	 * 1.verify that number of items added matches the number of cart items
-	 * 2.verify that products added matches the products available in the cart
-	 * 3.verify that user is able to remove a product
-	 * 4.verify checkout button is available --> should land on check out page
-	 * 5.verify that continue shopping button is available --> should land on inventory page
-	 * 6.remove all items from the cart and verify that no item is available
-	 * 7.remove all items from cart and verify that checkout button should be disabled?
-	 * 8.remove items and verify the cart badge count
-	 * 9.verify the product details --> name, price and desc -- same as pt 2
-	 * 10.Logout and log back in --verify all items are available in cart
+	 * 1.verify that number of items added matches the number of cart items 2.verify
+	 * that products added matches the products available in the cart 3.verify that
+	 * user is able to remove a product 4.verify checkout button is available -->
+	 * should land on check out page 5.verify that continue shopping button is
+	 * available --> should land on inventory page 6.remove all items from the cart
+	 * and verify that no item is available 7.remove all items from cart and verify
+	 * that checkout button should be disabled? 8.remove items and verify the cart
+	 * badge count 9.verify the product details --> name, price and desc -- same as
+	 * pt 2 10.Logout and log back in --verify all items are available in cart
 	 * 
 	 */
-	
+
 	public boolean isContinueShoppingBtnAvailable() {
 		return util.isElementDisplayed(continueShoppingBtn);
 	}
-	
+
 	public boolean isCheckoutBtnAvailable() {
 		return util.isElementDisplayed(checkoutBtn);
 	}
-	
+
 	public int getCartItemCount() {
 		return util.getElements(cartItemCount).size();
 	}
 	
+	public String getCartPageTitle() {
+		return util.doGetText(cartsPageTitle);
+	}
+	
+	public String getCartPageUrl() {
+		return util.getPageURL();
+	}
+
 	public String clickOnContinueShoppingBtn() {
 		util.doClick(continueShoppingBtn);
 		String productsPageHeader = util.doGetText(productsPageTitle);
 		util.doClick(shoppingCartLink);
 		return productsPageHeader;
 	}
-	
-	public void verifyProductDetails(String productname) {
-		
+
+	public Map<String, String> getProductDetails(String productname) {
+		//product details should match with the ones added to cart
+		//step - 1: add products to cart -- Test class
+		//step - 2: verify the product name 
+		Map<String, String> productMap = new HashMap<String, String>();
+		productMap.put("Product name", util.doGetAttributeValue(productName, "innerText"));
+		productMap.put("Product price", util.doGetAttributeValue(productPrice, "innerText"));
+		productMap.put("Product desc", util.doGetAttributeValue(productDesc, "innerText"));
+		util.doClick(continueShoppingBtn);
+		return productMap;
 	}
-	
+
 	public void removeAnItemAndVerifyCartBadgeCount() {
-		
+
 	}
-	
+
 	public void removeAllItemsAndVerifyCartPage() {
-		
+		// checkout should be disabled
 	}
-	
-	
+
+	public CheckoutInfoPage navigateToCheckoutPage() {
+		// if no items are available -- checkout will not be enabled
+		if (util.getElements(allProducts).size() > 0) {
+			util.doClick(checkoutBtn);
+			return new CheckoutInfoPage(driver);
+		} else {
+			return null;
+		}
+	}
+
 }

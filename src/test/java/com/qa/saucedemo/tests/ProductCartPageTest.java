@@ -1,5 +1,7 @@
 package com.qa.saucedemo.tests;
 
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -13,18 +15,32 @@ public class ProductCartPageTest extends BaseTest{
 
 	@BeforeClass
 	public void productCartPageSetup() {
-		cartPage = loginPage.navigateToInventoryPage(prop.getProperty("username").trim(), prop.getProperty("password").trim())
-		         .navigateToCartPage();	
+		inventoryPage = loginPage.navigateToInventoryPage(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+		         
 	}
 	
 	@Test
 	public void isContinueShoppingBtnAvailableTest() {
+		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.isContinueShoppingBtnAvailable());
 	}
 	
 	@Test
 	public void isCheckoutBtnAvailableTest() {
+		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.isCheckoutBtnAvailable());
+	}
+	
+	@Test
+	public void getCartPageTitleTest() {
+		cartPage = inventoryPage.navigateToCartPage();
+		Assert.assertEquals(cartPage.getCartPageTitle(), FrameworkConstants.CART_PAGE_HEADER);
+	}
+	
+	@Test
+	public void getCartPageUrlTest() {
+		cartPage = inventoryPage.navigateToCartPage();
+		Assert.assertTrue(cartPage.getCartPageUrl().contains(FrameworkConstants.CART_PAGE_URL));
 	}
 	
 	@DataProvider
@@ -40,11 +56,33 @@ public class ProductCartPageTest extends BaseTest{
 	@Test(dataProvider = "cartTestdata")
 	public void getCartItemCountTest(String productname) {
 		inventoryPage.addAProductToCart(productname);
+		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertEquals(cartPage.getCartItemCount(), inventoryPage.getShoppingCartItemCount());
 	}
 	
 	@Test
 	public void clickOnContinueShoppingBtnTest() {
+		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.clickOnContinueShoppingBtn().equals(FrameworkConstants.INVENTORY_PAGE_HEADER));
+	}
+	
+	@DataProvider
+	public Object[][] productTestdata(){
+		return new Object[][] {
+			{"Sauce Labs Backpack", "$29.99", "carry.allTheThings() with the sleek, streamlined Sly Pack"},
+			{"Sauce Labs Bike Light", "$9.99", "A red light isn't the desired state in testing but it sure helps when riding your bike at night"},
+			{"Sauce Labs Bolt T-Shirt", "$15.99", "Get your testing superhero on with the Sauce Labs bolt T-shirt"},
+			{"Sauce Labs Fleece Jacket", "$49.99", "It's not every day that you come across a midweight quarter-zip fleece jacket"}
+		};
+	}
+	
+	@Test(dataProvider = "productTestdata")
+	public void getProductDetailsTest(String name, String price, String desc) {
+		inventoryPage.addAProductToCart(name);
+		cartPage = inventoryPage.navigateToCartPage();
+		Map<String, String> productMap = cartPage.getProductDetails(name);
+		Assert.assertEquals(productMap.get("Product name"), name);
+		Assert.assertEquals(productMap.get("Product price"), price);
+		Assert.assertTrue(productMap.get("Product desc").contains(desc));
 	}
 }
