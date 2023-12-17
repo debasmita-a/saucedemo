@@ -16,30 +16,27 @@ public class ProductCartPageTest extends BaseTest{
 	@BeforeClass
 	public void productCartPageSetup() {
 		inventoryPage = loginPage.navigateToInventoryPage(prop.getProperty("username").trim(), prop.getProperty("password").trim());
+		cartPage = inventoryPage.navigateToCartPage();
 		         
 	}
 	
 	@Test
 	public void isContinueShoppingBtnAvailableTest() {
-		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.isContinueShoppingBtnAvailable());
 	}
 	
 	@Test
 	public void isCheckoutBtnAvailableTest() {
-		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.isCheckoutBtnAvailable());
 	}
 	
 	@Test
 	public void getCartPageTitleTest() {
-		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertEquals(cartPage.getCartPageTitle(), FrameworkConstants.CART_PAGE_HEADER);
 	}
 	
 	@Test
 	public void getCartPageUrlTest() {
-		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.getCartPageUrl().contains(FrameworkConstants.CART_PAGE_URL));
 	}
 	
@@ -55,14 +52,11 @@ public class ProductCartPageTest extends BaseTest{
 	
 	@Test(dataProvider = "cartTestdata")
 	public void getCartItemCountTest(String productname) {
-		inventoryPage.addAProductToCart(productname);
-		cartPage = inventoryPage.navigateToCartPage();
-		Assert.assertEquals(cartPage.getCartItemCount(), inventoryPage.getShoppingCartItemCount());
+		Assert.assertEquals(cartPage.getCartItemCount(productname), inventoryPage.getShoppingCartItemCount());
 	}
 	
 	@Test
 	public void clickOnContinueShoppingBtnTest() {
-		cartPage = inventoryPage.navigateToCartPage();
 		Assert.assertTrue(cartPage.clickOnContinueShoppingBtn().equals(FrameworkConstants.INVENTORY_PAGE_HEADER));
 	}
 	
@@ -78,8 +72,6 @@ public class ProductCartPageTest extends BaseTest{
 	
 	@Test(dataProvider = "productTestdata")
 	public void getProductDetailsTest(String name, String price, String desc) {
-		inventoryPage.addAProductToCart(name);
-		cartPage = inventoryPage.navigateToCartPage();
 		Map<String, String> productMap = cartPage.getProductDetails(name);
 		Assert.assertEquals(productMap.get("Product name"), name);
 		Assert.assertEquals(productMap.get("Product price"), price);

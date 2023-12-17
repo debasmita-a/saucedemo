@@ -20,10 +20,12 @@ public class ProductCartPage {
 	private By shoppingCartLink = By.id("shopping_cart_container");
 	private By allProducts = By.xpath("//div[@class='inventory_item_name']");
 	private By cartsPageTitle = By.className("title");
-	
-	private By productName = By.className("inventory_item_name");
-	private By productDesc = By.className("inventory_item_desc");
-	private By productPrice = By.className("inventory_item_price");
+
+	private int count = 1;
+
+	private By productName = By.xpath("(//div[@class='inventory_item_name'])[" + count + "]");
+	private By productDesc = By.xpath("(//div[@class='inventory_item_desc'])[" + count + "]");
+	private By productPrice = By.xpath("(//div[@class='inventory_item_price'])[" + count + "]");
 
 	public ProductCartPage(WebDriver driver) {
 		this.driver = driver;
@@ -52,35 +54,49 @@ public class ProductCartPage {
 		return util.isElementDisplayed(checkoutBtn);
 	}
 
-	public int getCartItemCount() {
+	public int getCartItemCount(String productname) {
+		clickOnContinueShoppingBtn();
+		addAProductToCart(productname);
+		clickOnCartLink();
 		return util.getElements(cartItemCount).size();
 	}
-	
+
 	public String getCartPageTitle() {
 		return util.doGetText(cartsPageTitle);
 	}
-	
+
 	public String getCartPageUrl() {
 		return util.getPageURL();
 	}
 
 	public String clickOnContinueShoppingBtn() {
 		util.doClick(continueShoppingBtn);
-		String productsPageHeader = util.doGetText(productsPageTitle);
+		return util.doGetText(productsPageTitle);
+	}
+
+	public void clickOnCartLink() {
 		util.doClick(shoppingCartLink);
-		return productsPageHeader;
 	}
 
 	public Map<String, String> getProductDetails(String productname) {
-		//product details should match with the ones added to cart
-		//step - 1: add products to cart -- Test class
-		//step - 2: verify the product name 
+		// product details should match with the ones added to cart
+		// step - 1: add products to cart -- Test class
+		// step - 2: verify the product name
+		
+		clickOnContinueShoppingBtn();
+		addAProductToCart(productname);
+		clickOnCartLink();
+
 		Map<String, String> productMap = new HashMap<String, String>();
 		productMap.put("Product name", util.doGetAttributeValue(productName, "innerText"));
 		productMap.put("Product price", util.doGetAttributeValue(productPrice, "innerText"));
 		productMap.put("Product desc", util.doGetAttributeValue(productDesc, "innerText"));
-		util.doClick(continueShoppingBtn);
+		count ++;
 		return productMap;
+	}
+
+	public void addAProductToCart(String productname) {
+		util.doClick(util.getProductAddToCartID(productname));
 	}
 
 	public void removeAnItemAndVerifyCartBadgeCount() {
