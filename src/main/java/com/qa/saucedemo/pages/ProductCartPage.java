@@ -21,11 +21,7 @@ public class ProductCartPage {
 	private By allProducts = By.xpath("//div[@class='inventory_item_name']");
 	private By cartsPageTitle = By.className("title");
 
-	private int count = 1;
-
-	private By productName = By.xpath("(//div[@class='inventory_item_name'])[" + count + "]");
-	private By productDesc = By.xpath("(//div[@class='inventory_item_desc'])[" + count + "]");
-	private By productPrice = By.xpath("(//div[@class='inventory_item_price'])[" + count + "]");
+	private static int count = 0;
 
 	public ProductCartPage(WebDriver driver) {
 		this.driver = driver;
@@ -82,20 +78,24 @@ public class ProductCartPage {
 		// product details should match with the ones added to cart
 		// step - 1: add products to cart -- Test class
 		// step - 2: verify the product name
-		
+
 		clickOnContinueShoppingBtn();
 		addAProductToCart(productname);
 		clickOnCartLink();
+		count++;
 
 		Map<String, String> productMap = new HashMap<String, String>();
-		productMap.put("Product name", util.doGetAttributeValue(productName, "innerText"));
-		productMap.put("Product price", util.doGetAttributeValue(productPrice, "innerText"));
-		productMap.put("Product desc", util.doGetAttributeValue(productDesc, "innerText"));
-		count ++;
+		productMap.put("Product name", util
+				.doGetAttributeValue(By.xpath("(//div[@class='inventory_item_name'])[" + count + "]"), "innerText"));
+		productMap.put("Product price", util
+				.doGetAttributeValue(By.xpath("(//div[@class='inventory_item_price'])[" + count + "]"), "innerText"));
+		productMap.put("Product desc", util
+				.doGetAttributeValue(By.xpath("(//div[@class='inventory_item_desc'])[" + count + "]"), "innerText"));
 		return productMap;
 	}
 
 	public void addAProductToCart(String productname) {
+
 		util.doClick(util.getProductAddToCartID(productname));
 	}
 
