@@ -24,4 +24,8 @@ public class FrameworkConstants {
 	
 	public static final String POSTAL_CODE_ERROR = "Error: Postal Code is required";
 	public static final String FIRST_NAME_ERROR = "Error: First Name is required";
+	public static final String LAST_NAME_ERROR = "Error: Last Name is required";
+	
+	public static final String PAYMENT_INFO_VALUE_LABEL = "SauceCard #31337";
+	public static final String SHIPPING_INFO_VALUE_LABEL = "Free Pony Express Delivery!";
 }
