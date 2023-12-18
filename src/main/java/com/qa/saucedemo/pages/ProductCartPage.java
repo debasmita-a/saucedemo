@@ -1,6 +1,8 @@
 package com.qa.saucedemo.pages;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -15,7 +17,8 @@ public class ProductCartPage {
 
 	private By continueShoppingBtn = By.id("continue-shopping");
 	private By checkoutBtn = By.id("checkout");
-	private By cartItemCount = By.className("cart_item");
+	private By cartProductCount = By.className("cart_item");
+	private By cartBadgeCount = By.className("shopping_cart_badge");
 	private By productsPageTitle = By.className("title");
 	private By shoppingCartLink = By.id("shopping_cart_container");
 	private By allProducts = By.xpath("//div[@class='inventory_item_name']");
@@ -54,7 +57,7 @@ public class ProductCartPage {
 		clickOnContinueShoppingBtn();
 		addAProductToCart(productname);
 		clickOnCartLink();
-		return util.getElements(cartItemCount).size();
+		return util.getElements(cartProductCount).size();
 	}
 
 	public String getCartPageTitle() {
@@ -95,20 +98,40 @@ public class ProductCartPage {
 	}
 
 	public void addAProductToCart(String productname) {
-
 		util.doClick(util.getProductAddToCartID(productname));
 	}
 
-	public void removeAnItemAndVerifyCartBadgeCount() {
-
+	public void addListOfProducts(List<String> products) {
+		util.doClick(continueShoppingBtn);
+		for (String product : products) {
+			util.doClick(util.getProductAddToCartID(product));
+		}
+		util.doClick(shoppingCartLink);
 	}
 
-	public void removeAllItemsAndVerifyCartPage() {
-		// checkout should be disabled
+	public int removeAnItemAndVerifyCartBadgeCount(String productname) {
+		// add a products then remove
+		if (util.isElementDisplayed(util.getProductRemoveId(productname))) {
+			util.doClick(util.getProductRemoveId(productname));
+		} else {
+			System.out.println("Product not added not cart.");
+		}
+		return Integer.parseInt(util.doGetText(cartBadgeCount));
 	}
 
-	public CheckoutInfoPage navigateToCheckoutPage() {
-		// if no items are available -- checkout will not be enabled
+	public boolean removeAllItemsAndVerifyCartPage(List<String> products) {
+		addListOfProducts(products);
+		for (String product : products) {
+			util.doClick(util.getProductRemoveId(product));
+		}
+		if (util.isElementDisplayed(checkoutBtn)) {
+			return false;
+		}
+		return true;
+	}
+
+	public CheckoutInfoPage navigateToCheckoutPage(List<String> products) {
+		addListOfProducts(products);
 		if (util.getElements(allProducts).size() > 0) {
 			util.doClick(checkoutBtn);
 			return new CheckoutInfoPage(driver);

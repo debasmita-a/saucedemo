@@ -7,6 +7,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import com.qa.saucedemo.factory.DriverFactory;
+import com.qa.saucedemo.pages.CheckoutInfoPage;
 import com.qa.saucedemo.pages.InventoryPage;
 import com.qa.saucedemo.pages.LoginPage;
 import com.qa.saucedemo.pages.ProductCartPage;
@@ -21,6 +22,7 @@ public class BaseTest {
 	protected InventoryPage inventoryPage;
 	protected ProductCartPage cartPage;
 	protected ProductDetailsPage productDetailsPage;
+	protected CheckoutInfoPage checkoutInfoPage;
 	
 	@BeforeTest
 	public void setup() {

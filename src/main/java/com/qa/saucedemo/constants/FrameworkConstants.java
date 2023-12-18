@@ -21,4 +21,7 @@ public class FrameworkConstants {
 	public static final String INVENTORY_PAGE_HEADER = "Products";
 	public static final String CHECKOUT_STEP1_PAGE_HEADER = "Checkout: Your Information";
 	public static final String CHECKOUT_STEP2_PAGE_HEADER = "Checkout: Overview";
+	
+	public static final String POSTAL_CODE_ERROR = "Error: Postal Code is required";
+	public static final String FIRST_NAME_ERROR = "Error: First Name is required";
 }

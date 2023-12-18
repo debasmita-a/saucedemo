@@ -1,5 +1,8 @@
 package com.qa.saucedemo.tests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -76,5 +79,19 @@ public class ProductCartPageTest extends BaseTest{
 		Assert.assertEquals(productMap.get("Product name"), name);
 		Assert.assertEquals(productMap.get("Product price"), price);
 		Assert.assertTrue(productMap.get("Product desc").contains(desc));
+	}
+
+	@Test
+	public void removeAnItemAndVerifyCartBadgeCountTest() {
+		List<String> products = new ArrayList<String>(Arrays.asList("Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"));
+		cartPage.addListOfProducts(products);
+		int count = cartPage.removeAnItemAndVerifyCartBadgeCount("Sauce Labs Backpack");
+		Assert.assertEquals(count, inventoryPage.getShoppingCartItemCount());
+	}
+	
+	@Test
+	public void removeAllItemsAndVerifyCartPageTest() {
+		List<String> products = new ArrayList<String>(Arrays.asList("Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"));		
+		Assert.assertTrue(cartPage.removeAllItemsAndVerifyCartPage(products));
 	}
 }

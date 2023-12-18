@@ -165,8 +165,7 @@ public class InventoryPage {
 			return cartItemCount;
 		}else {
 			return 0;
-		}
-		
+		}	
 	}
 	
 	public boolean addAProductToCart(String productname) {// if already added then it can't be added

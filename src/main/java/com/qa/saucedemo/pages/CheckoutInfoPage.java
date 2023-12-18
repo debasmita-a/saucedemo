@@ -9,14 +9,13 @@ public class CheckoutInfoPage {
 
 	private WebDriver driver;
 	private ElementUtil util;
-	private static boolean flag = false;
 
 	private By cancelBtn = By.id("cancel");
 	private By continueBtn = By.id("continue");
 	private By firstname = By.id("first-name");
 	private By lastname = By.id("last-name");
 	private By postalcode = By.id("postal-code");
-	private By errorMsg = By.xpath("//h3/button[@class = 'error-button']");
+	private By errorMsg = By.xpath("//h3[@data-test='error']");
 	private By cartsPageTitle = By.className("title");
 	private By checkoutInfoTitle = By.className("title");
 
@@ -25,15 +24,11 @@ public class CheckoutInfoPage {
 		util = new ElementUtil(driver);
 	}
 
-	public String fillInformation(String firstName, String lastName, String zipcode) {
+	public boolean setflagValue(String firstName, String lastName, String zipcode) {
 		if (firstName != null && lastName != null && zipcode != null) {
-			util.doSendKeys(firstname, firstName);
-			util.doSendKeys(lastname, lastName);
-			util.doSendKeys(postalcode, zipcode);
-			flag = true;
-			return "";
+			return true;
 		}
-		return util.doGetText(errorMsg);
+		return false;
 	}
 
 	public String getCheckoutInfoPageTitle() {
@@ -48,10 +43,36 @@ public class CheckoutInfoPage {
 		util.doClick(cancelBtn);
 		return util.doGetText(cartsPageTitle);
 	}
-
+	
+	public String fillInformationWithoutZipcode(String firstName, String lastName) {
+		util.doSendKeys(firstname, firstName);
+		util.doSendKeys(lastname, lastName);
+		//util.doSendKeys(postalcode, zipcode);
+		util.doClick(continueBtn);
+		return util.doGetAttributeValue(errorMsg, "innerText");
+	}
+	
+	public String fillInformationWithoutLn(String firstName, String zipcode) {
+		util.doSendKeys(firstname, firstName);
+		//util.doSendKeys(lastname, lastName);
+		util.doSendKeys(postalcode, zipcode);
+		util.doClick(continueBtn);
+		return util.doGetAttributeValue(errorMsg, "innerText");
+	}
+	
+	public String fillInformationWithoutFn(String lastName, String zipcode) {
+		//util.doSendKeys(firstname, firstName);
+		util.doSendKeys(lastname, lastName);
+		util.doSendKeys(postalcode, zipcode);
+		util.doClick(continueBtn);
+		return util.doGetAttributeValue(errorMsg, "innerText");
+	}
+	
 	public CheckoutOverviewPage clickOnContinue(String firstName, String lastName, String zipcode) {
-		fillInformation(firstName, lastName, zipcode);
-		if(flag == true) {
+		util.doSendKeys(firstname, firstName);
+		util.doSendKeys(lastname, lastName);
+		util.doSendKeys(postalcode, zipcode);
+		if(setflagValue(firstName, lastName, zipcode)) {
 			util.doClick(continueBtn);
 		}
 		return new CheckoutOverviewPage(driver);
