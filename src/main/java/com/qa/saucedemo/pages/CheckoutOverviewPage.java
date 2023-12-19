@@ -1,10 +1,12 @@
 package com.qa.saucedemo.pages;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.qa.saucedemo.utils.ElementUtil;
 
@@ -25,20 +27,46 @@ public class CheckoutOverviewPage {
 	private By summaryInfoValue = By.className("summary_value_label");
 	private By summaryPriceSubTotalLabel = By.className("summary_subtotal_label");
 	private By taxLabel = By.className("summary_tax_label");
-	private By totalPriceLabel = By.className("summary_info_label summary_total_label");
 	
 	public CheckoutOverviewPage(WebDriver driver) {
 		this.driver = driver;
 		util = new ElementUtil(driver);
-		priceTotalInfo = new HashMap<String, String>();
+		//priceTotalInfo = new HashMap<String, String>();
 	}
 	
-	public void extractPriceValue() {
-		String priceInfo = util.doGetAttributeValue(summaryPriceSubTotalLabel, "innerText");
-		System.out.println(priceInfo);
+	public void getPriceMetadata() {
+		Map<String, String> priceMap = new HashMap<String, String>();
+		String priceMetadata = util.doGetText(summaryPriceSubTotalLabel);
+		String pricedata[] = priceMetadata.split(":");
+		priceMap.put(pricedata[0].trim(), pricedata[1].trim());
+		float itemPrice = Float.parseFloat(pricedata[1].replace("$", "").trim());
+		String taxMetadata = util.doGetText(taxLabel);
+		String taxdata[] = taxMetadata.split(":");
+		float tax = Float.parseFloat(taxdata[1].replace("$", "").trim());
+		priceMap.put(taxdata[0].trim(), taxdata[1].trim());
+		System.out.println("Price details : " + priceMap);	
 	}
+	
 	public void getPriceTotal() {
 		
+	}
+	
+	public String getPageTitle() {
+		return util.getPageTitle();
+	}
+	
+	public String getPageUrl() {
+		return util.getPageURL();
+	}
+	
+	public String clickOnCancelBtn() {
+		util.doClick(cancelBtn);
+		return util.doGetText(checkoutInfoTitle);
+	}
+	
+	public CheckoutCompletePage clickOnFinishBtn() {
+		util.doClick(finishBtn);
+		return new CheckoutCompletePage(driver);
 	}
 	
 	

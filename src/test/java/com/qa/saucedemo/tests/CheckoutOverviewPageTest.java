@@ -24,6 +24,6 @@ public class CheckoutOverviewPageTest extends BaseTest{
 	
 	@Test
 	public void extractPriceValueTest() {
-		checkoutOverviewPage.extractPriceValue();
+		checkoutOverviewPage.getPriceMetadata();
 	}
 }
