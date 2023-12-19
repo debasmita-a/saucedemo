@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import com.qa.saucedemo.constants.FrameworkConstants;
 
 import qa.com.saucedemo.base.BaseTest;
 
@@ -23,7 +26,27 @@ public class CheckoutOverviewPageTest extends BaseTest{
 	}
 	
 	@Test
-	public void extractPriceValueTest() {
+	public void getPriceMetadataTest() {
 		checkoutOverviewPage.getPriceMetadata();
+	}
+	
+	@Test
+	public void getItemOrderMetadataTest() {
+		checkoutOverviewPage.getItemOrderMetadata();
+	}
+	
+	@Test
+	public void getPageTitleTest() {
+		Assert.assertEquals(checkoutOverviewPage.getPageTitle(), FrameworkConstants.CHECKOUT_STEP2_PAGE_HEADER);
+	}
+	
+	@Test
+	public void getPageUrlTest() {
+		Assert.assertTrue(checkoutOverviewPage.getPageUrl().contains(FrameworkConstants.CHECKOUT_STEP2_PAGE_URL));
+	}
+	
+	@Test
+	public void clickOnCancelBtnTest() {
+		Assert.assertEquals(checkoutOverviewPage.clickOnCancelBtn(), FrameworkConstants.CHECKOUT_STEP1_PAGE_HEADER);
 	}
 }
