@@ -16,6 +16,7 @@ public class CheckoutOverviewPage {
 	private WebDriver driver;
 	private ElementUtil util;
 	private Map<String, String> priceTotalInfo = null;
+	private float totalItemPrice = 0;
 
 	private By pageTitle = By.className("title");
 	private By checkoutInfoTitle = By.className("title");
@@ -28,6 +29,7 @@ public class CheckoutOverviewPage {
 	private By summaryInfoValue = By.className("summary_value_label");
 	private By summaryPriceSubTotalLabel = By.className("summary_subtotal_label");
 	private By taxLabel = By.className("summary_tax_label");
+	private By totalPrice = By.xpath("//div[contains(@class,'summary_total_label')]");
 
 	public CheckoutOverviewPage(WebDriver driver) {
 		this.driver = driver;
@@ -35,7 +37,7 @@ public class CheckoutOverviewPage {
 		// priceTotalInfo = new HashMap<String, String>();
 	}
 
-	public void getPriceMetadata() {
+	public Map<String, String> getPriceMetadata() {
 		Map<String, String> priceMap = new HashMap<String, String>();
 		String priceMetadata = util.doGetText(summaryPriceSubTotalLabel);
 		String pricedata[] = priceMetadata.split(":");
@@ -46,10 +48,45 @@ public class CheckoutOverviewPage {
 		float tax = Float.parseFloat(taxdata[1].replace("$", "").trim());
 		priceMap.put(taxdata[0].trim(), taxdata[1].trim());
 		System.out.println("Price details : " + priceMap);
+
+		return priceMap;
 	}
 
-	public void getPriceTotal() {
+	public float getPricesOfAllItems() {
+		List<Float> prices = new ArrayList<Float>();
+		List<WebElement> itemPrices = util.getElements(productPrice);
+		for (WebElement e : itemPrices) {
+			prices.add(Float.parseFloat(e.getText().replace("$", "").trim()));
+		}
+		System.out.println(prices);
+		for (float f : prices) {
+			totalItemPrice = totalItemPrice + f;
+		}
+		System.out.println(totalItemPrice);
 
+		return totalItemPrice;
+	}
+
+	public Map<String, String> getTotalPriceMetadata() {
+		String totalPriceData = util.doGetText(totalPrice);
+		String[] arr = totalPriceData.split(":");
+		priceTotalInfo.put(arr[0].trim(), arr[1].trim());
+		return priceTotalInfo;
+	}
+
+	public boolean verifyTotalItemPrice() {
+		float allItemPrices = getPricesOfAllItems();
+		float totalPriceWithoutTax = Float.parseFloat(getPriceMetadata().get("Item total").replace("$", ""));
+		float totalPriceWithTax = Float.parseFloat(getPriceMetadata().get("Item total").replace("$", "")) + Float.parseFloat(getPriceMetadata().get("Tax").replace("$", ""));
+
+		System.out.println(allItemPrices);
+		System.out.println(totalPriceWithoutTax);
+		System.out.println(totalPriceWithTax);
+		
+		if(allItemPrices == totalPriceWithoutTax) {
+			return true;
+		}
+		return false;
 	}
 
 	public void getItemOrderMetadata() {
@@ -57,11 +94,11 @@ public class CheckoutOverviewPage {
 		List<WebElement> allLabels = util.getElements(summaryInfoLabel);
 		List<WebElement> allValues = util.getElements(summaryInfoValue);
 		List<String> keys = new ArrayList<String>();
-		for(WebElement e : allLabels) {
+		for (WebElement e : allLabels) {
 			keys.add(e.getText());
 		}
 		List<String> values = new ArrayList<String>();
-		for(WebElement e : allValues) {
+		for (WebElement e : allValues) {
 			values.add(e.getText());
 		}
 		System.out.println(keys);

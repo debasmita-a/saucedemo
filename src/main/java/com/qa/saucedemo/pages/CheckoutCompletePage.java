@@ -2,6 +2,7 @@ package com.qa.saucedemo.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import com.qa.saucedemo.utils.ElementUtil;
 
@@ -14,10 +15,13 @@ public class CheckoutCompletePage {
 	private By completeHeader = By.className("complete-header");
 	private By completeText = By.className("complete-text");
 	private By image = By.className("pony_express");
+	private By completionPageTitle = By.className("title");
 	
 	private By productsPageTitle = By.className("title");
 	private By burgerMenuBtn = By.id("react-burger-menu-btn");
-	private By logoutLink = By.linkText("Logout");
+	//private By logoutLink = By.linkText("Logout");
+	private By logoutLink = By.id("logout_sidebar_link");
+	private By loginBtn = By.id("login-button");
 	
 	public CheckoutCompletePage(WebDriver driver) {
 		this.driver = driver;
@@ -29,7 +33,7 @@ public class CheckoutCompletePage {
 	}
 	
 	public String getPageTitle() {
-		return util.getPageTitle();
+		return util.doGetText(completionPageTitle);
 	}
 	
 	public String getCompletionHeaderMsg() {
@@ -46,12 +50,17 @@ public class CheckoutCompletePage {
 	
 	public String clickOnBackHomeBtn() {
 		util.doClick(backHomeBtn);
-		return util.doGetText(productsPageTitle);
+		String productsTitle = util.doGetText(productsPageTitle);
+		driver.navigate().back();
+		return productsTitle;
 	}
 	
-	public void clickOnLogoutBtn() {
+	public boolean clickOnLogoutBtn() {
 		util.doClick(burgerMenuBtn);
-		util.doClick(logoutLink);
+		//util.doClick(logoutLink);
+		Actions action = new Actions(driver);
+		action.click(util.getElement(logoutLink));
+		return util.isElementDisplayed(loginBtn);
 	}
 	
 }

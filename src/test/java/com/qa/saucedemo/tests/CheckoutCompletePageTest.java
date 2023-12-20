@@ -55,4 +55,9 @@ public class CheckoutCompletePageTest extends BaseTest {
 	public void clickOnBackHomeBtnTest() {
 		Assert.assertEquals(checkoutCompletePage.clickOnBackHomeBtn(), FrameworkConstants.INVENTORY_PAGE_HEADER);
 	}
+	
+	@Test(enabled = false)
+	public void clickOnLogoutBtnTest() {
+		Assert.assertTrue(checkoutCompletePage.clickOnLogoutBtn());
+	}
 }

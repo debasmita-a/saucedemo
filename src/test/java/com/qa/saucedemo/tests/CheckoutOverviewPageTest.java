@@ -49,4 +49,14 @@ public class CheckoutOverviewPageTest extends BaseTest{
 	public void clickOnCancelBtnTest() {
 		Assert.assertEquals(checkoutOverviewPage.clickOnCancelBtn(), FrameworkConstants.CHECKOUT_STEP1_PAGE_HEADER);
 	}
+	
+	@Test
+	public void getPricesOfAllItemsTest() {
+		checkoutOverviewPage.getPricesOfAllItems();
+	}
+	
+	@Test
+	public void verifyTotalItemPriceTest() {
+		Assert.assertTrue(checkoutOverviewPage.verifyTotalItemPrice());
+	}
 }
