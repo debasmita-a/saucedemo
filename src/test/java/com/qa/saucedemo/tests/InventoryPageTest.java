@@ -1,9 +1,5 @@
 package com.qa.saucedemo.tests;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;

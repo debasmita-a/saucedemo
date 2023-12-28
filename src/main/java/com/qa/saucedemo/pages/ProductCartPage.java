@@ -1,12 +1,12 @@
 package com.qa.saucedemo.pages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.qa.saucedemo.utils.ElementUtil;
 
@@ -23,6 +23,7 @@ public class ProductCartPage {
 	private By shoppingCartLink = By.id("shopping_cart_container");
 	private By allProducts = By.xpath("//div[@class='inventory_item_name']");
 	private By cartsPageTitle = By.className("title");
+	private By allRemoveBtn = By.xpath("//button[contains(@id,'remove')]");
 
 	private static int count = 0;
 
@@ -54,7 +55,7 @@ public class ProductCartPage {
 	}
 
 	public int getCartItemCount(String productname) {
-		clickOnContinueShoppingBtn();
+		util.doClick(continueShoppingBtn);
 		addAProductToCart(productname);
 		clickOnCartLink();
 		return util.getElements(cartProductCount).size();
@@ -70,7 +71,9 @@ public class ProductCartPage {
 
 	public String clickOnContinueShoppingBtn() {
 		util.doClick(continueShoppingBtn);
-		return util.doGetText(productsPageTitle);
+		String productPageTitle = util.doGetText(productsPageTitle);
+		clickOnCartLink();
+		return productPageTitle;
 	}
 
 	public void clickOnCartLink() {
@@ -82,7 +85,7 @@ public class ProductCartPage {
 		// step - 1: add products to cart -- Test class
 		// step - 2: verify the product name
 
-		clickOnContinueShoppingBtn();
+		util.doClick(continueShoppingBtn);
 		addAProductToCart(productname);
 		clickOnCartLink();
 		count++;
@@ -99,6 +102,13 @@ public class ProductCartPage {
 
 	public void addAProductToCart(String productname) {
 		util.doClick(util.getProductAddToCartID(productname));
+	}
+	
+	public void removeAllItems() {
+		List<WebElement> allItemsToRemove = util.getElements(allRemoveBtn);
+		for(WebElement removeBtn : allItemsToRemove) {
+			removeBtn.click();
+		}
 	}
 
 	public void addListOfProducts(List<String> products) {
@@ -119,9 +129,10 @@ public class ProductCartPage {
 		return Integer.parseInt(util.doGetText(cartBadgeCount));
 	}
 
-	public boolean removeAllItemsAndVerifyCartPage(List<String> products) {
+	public boolean removeAllItemsAndVerifyCheckoutBtn(List<String> products) { //will always fail for the app
+		removeAllItems();
 		addListOfProducts(products);
-		for (String product : products) {
+		for(String product : products) {
 			util.doClick(util.getProductRemoveId(product));
 		}
 		if (util.isElementDisplayed(checkoutBtn)) {

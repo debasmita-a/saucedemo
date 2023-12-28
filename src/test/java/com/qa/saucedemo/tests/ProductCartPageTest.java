@@ -56,6 +56,7 @@ public class ProductCartPageTest extends BaseTest{
 	@Test(dataProvider = "cartTestdata")
 	public void getCartItemCountTest(String productname) {
 		Assert.assertEquals(cartPage.getCartItemCount(productname), inventoryPage.getShoppingCartItemCount());
+		cartPage.removeAllItems();
 	}
 	
 	@Test
@@ -92,6 +93,6 @@ public class ProductCartPageTest extends BaseTest{
 	@Test
 	public void removeAllItemsAndVerifyCartPageTest() {
 		List<String> products = new ArrayList<String>(Arrays.asList("Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Bolt T-Shirt"));		
-		Assert.assertTrue(cartPage.removeAllItemsAndVerifyCartPage(products));
+		Assert.assertTrue(cartPage.removeAllItemsAndVerifyCheckoutBtn(products));
 	}
 }

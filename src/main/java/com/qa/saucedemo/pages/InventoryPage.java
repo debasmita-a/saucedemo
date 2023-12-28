@@ -28,6 +28,7 @@ public class InventoryPage {
 	private By cartBadge = By.className("shopping_cart_badge");
 	private By menuBtn = By.id("react-burger-menu-btn");
 	private By menuOptions = By.xpath("//nav/a");
+	private By logoutLink = By.id("logout_sidebar_link");
 	private By menuCrossBtn = By.id("react-burger-cross-btn");
 	private By filters = By.className("product_sort_container");
 	private By footer = By.className("footer_copy");
@@ -140,15 +141,11 @@ public class InventoryPage {
 
 	public boolean isLogoutLinkAvailable() {
 		util.doClick(menuBtn);
-		List<WebElement> allNavMenu = util.getElements(menuOptions);
-		for (WebElement e : allNavMenu) {
-			if (e.getText().equals("Logout")) {
-				util.doClick(menuCrossBtn);
-				return true;
-			}
-		}
-		//util.doClick(menuCrossBtn);
-		return false;
+		boolean flag = util.waitForElementToBeVisible(logoutLink).isDisplayed();
+		System.out.println(flag);
+		util.doActionClick(menuCrossBtn);
+		driver.switchTo().defaultContent();
+		return flag;
 	}
 
 	public String getFooterText() {
